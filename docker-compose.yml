@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toor
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/sql:/docker-entrypoint-initdb.d
+  flaskapi:
+    build: ./
+    ports:
+      - "9000:80"
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:toor@db/classicmodels
+
+networks:
+  default:
+    external:
+      name: flask
+
+# vim: set expandtab tabstop=2:
